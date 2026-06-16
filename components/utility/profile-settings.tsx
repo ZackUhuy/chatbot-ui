@@ -113,6 +113,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
   const [perplexityAPIKey, setPerplexityAPIKey] = useState(
     profile?.perplexity_api_key || ""
   )
+  const [mimoAPIKey, setMimoAPIKey] = useState(profile?.mimo_api_key || "")
 
   const [openrouterAPIKey, setOpenrouterAPIKey] = useState(
     profile?.openrouter_api_key || ""
@@ -150,6 +151,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       mistral_api_key: mistralAPIKey,
       groq_api_key: groqAPIKey,
       perplexity_api_key: perplexityAPIKey,
+      mimo_api_key: mimoAPIKey,
       use_azure_openai: useAzureOpenai,
       azure_openai_api_key: azureOpenaiAPIKey,
       azure_openai_endpoint: azureOpenaiEndpoint,
@@ -172,7 +174,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       "mistral",
       "groq",
       "perplexity",
-      "openrouter"
+      "openrouter",
+      "mimo"
     ]
 
     providers.forEach(async provider => {
@@ -719,6 +722,22 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                       type="password"
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
+                    />
+                  </>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                {envKeyMap["mimo"] ? (
+                  <Label>MIMO API key set by admin.</Label>
+                ) : (
+                  <>
+                    <Label>MIMO API Key</Label>
+                    <Input
+                      placeholder="MIMO API Key"
+                      type="password"
+                      value={mimoAPIKey}
+                      onChange={e => setMimoAPIKey(e.target.value)}
                     />
                   </>
                 )}

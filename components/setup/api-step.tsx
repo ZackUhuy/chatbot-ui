@@ -17,6 +17,7 @@ interface APIStepProps {
   mistralAPIKey: string
   groqAPIKey: string
   perplexityAPIKey: string
+  mimoAPIKey: string
   useAzureOpenai: boolean
   openrouterAPIKey: string
   onOpenrouterAPIKeyChange: (value: string) => void
@@ -33,6 +34,7 @@ interface APIStepProps {
   onMistralAPIKeyChange: (value: string) => void
   onGroqAPIKeyChange: (value: string) => void
   onPerplexityAPIKeyChange: (value: string) => void
+  onMimoAPIKeyChange: (value: string) => void
   onUseAzureOpenaiChange: (value: boolean) => void
 }
 
@@ -50,6 +52,7 @@ export const APIStep: FC<APIStepProps> = ({
   mistralAPIKey,
   groqAPIKey,
   perplexityAPIKey,
+  mimoAPIKey,
   openrouterAPIKey,
   useAzureOpenai,
   onOpenaiAPIKeyChange,
@@ -65,6 +68,7 @@ export const APIStep: FC<APIStepProps> = ({
   onMistralAPIKeyChange,
   onGroqAPIKeyChange,
   onPerplexityAPIKeyChange,
+  onMimoAPIKeyChange,
   onUseAzureOpenaiChange,
   onOpenrouterAPIKeyChange
 }) => {
@@ -236,6 +240,16 @@ export const APIStep: FC<APIStepProps> = ({
           type="password"
           value={openrouterAPIKey}
           onChange={e => onOpenrouterAPIKeyChange(e.target.value)}
+        />
+      </div>
+      <div className="space-y-1">
+        <Label>MIMO API Key</Label>
+
+        <Input
+          placeholder="MIMO API Key"
+          type="password"
+          value={mimoAPIKey}
+          onChange={e => onMimoAPIKeyChange(e.target.value)}
         />
       </div>
     </>

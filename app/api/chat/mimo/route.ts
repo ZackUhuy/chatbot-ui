@@ -1,3 +1,4 @@
+import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
 import { OpenAIStream, StreamingTextResponse } from "ai"
 import { ServerRuntime } from "next"
 import OpenAI from "openai"
@@ -16,15 +17,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    const apiKey = process.env.MIMO_API_KEY || ""
+    const profile = await getServerProfile()
+
+    checkApiKey(profile.mimo_api_key, "MIMO")
+
+    const apiKey = profile.mimo_api_key || ""
     const baseURL =
       process.env.MIMO_BASE_URL || "https://token-plan-sgp.xiaomimimo.com/v1"
-
-    if (!apiKey) {
-      throw new Error(
-        "MIMO API Key not found. Please set it in your environment variables."
-      )
-    }
 
     const client = new OpenAI({
       apiKey,

@@ -31,20 +31,17 @@ export const fetchHostedModels = async (profile: Tables<"profiles">) => {
     let modelsToAdd: LLM[] = []
 
     for (const provider of providers) {
-      let hasKey = false
+      let providerKey: keyof typeof profile
 
       if (provider === "google") {
-        hasKey = !!profile.google_gemini_api_key
+        providerKey = "google_gemini_api_key"
       } else if (provider === "azure") {
-        hasKey = !!profile.azure_openai_api_key
-      } else if (provider === "mimo") {
-        hasKey = false
+        providerKey = "azure_openai_api_key"
       } else {
-        const providerKey = `${provider}_api_key` as keyof typeof profile
-        hasKey = !!profile?.[providerKey]
+        providerKey = `${provider}_api_key` as keyof typeof profile
       }
 
-      if (hasKey || data.isUsingEnvKeyMap[provider]) {
+      if (profile?.[providerKey] || data.isUsingEnvKeyMap[provider]) {
         const models = LLM_LIST_MAP[provider]
 
         if (Array.isArray(models)) {
