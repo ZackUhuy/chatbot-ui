@@ -5,7 +5,14 @@ import { LLM_LIST_MAP } from "./llm/llm-list"
 
 export const fetchHostedModels = async (profile: Tables<"profiles">) => {
   try {
-    const providers = ["google", "anthropic", "mistral", "groq", "perplexity"]
+    const providers = [
+      "google",
+      "anthropic",
+      "mistral",
+      "groq",
+      "perplexity",
+      "mimo"
+    ]
 
     if (profile.use_azure_openai) {
       providers.push("azure")
@@ -24,17 +31,20 @@ export const fetchHostedModels = async (profile: Tables<"profiles">) => {
     let modelsToAdd: LLM[] = []
 
     for (const provider of providers) {
-      let providerKey: keyof typeof profile
+      let hasKey = false
 
       if (provider === "google") {
-        providerKey = "google_gemini_api_key"
+        hasKey = !!profile.google_gemini_api_key
       } else if (provider === "azure") {
-        providerKey = "azure_openai_api_key"
+        hasKey = !!profile.azure_openai_api_key
+      } else if (provider === "mimo") {
+        hasKey = false
       } else {
-        providerKey = `${provider}_api_key` as keyof typeof profile
+        const providerKey = `${provider}_api_key` as keyof typeof profile
+        hasKey = !!profile?.[providerKey]
       }
 
-      if (profile?.[providerKey] || data.isUsingEnvKeyMap[provider]) {
+      if (hasKey || data.isUsingEnvKeyMap[provider]) {
         const models = LLM_LIST_MAP[provider]
 
         if (Array.isArray(models)) {
